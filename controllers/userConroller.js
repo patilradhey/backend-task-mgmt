@@ -114,3 +114,10 @@ module.exports = {
 //     "password": "tesla",
 //     "contactNumber": "9876543210"
 // }
+
+// {
+//     "name": "admin",
+//     "email": "admin@example.com",
+//     "password": "admin",
+//     "contactNumber": "9876543210"
+// }
