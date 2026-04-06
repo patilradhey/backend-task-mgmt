@@ -10,9 +10,11 @@ router.get('/getAllTasks',taskController.findALLTasks)
 
 router.get('/getTask/:id', taskController.getTaskById)
 
-router.put('/updateTask', taskController.updateTask)
+router.put('/updateTaskByAdmin/:task_ID',auth,admin ,taskController.updateTaskByAdmin)
 
-router.delete('/deleteTask', taskController.deleteTask)
+router.patch('/updateTaskStatus/:task_ID', auth, taskController.updateTaskStatus)
+
+router.delete('/deleteTask/:task_ID',auth,admin ,taskController.deleteTask)
 
 
 module.exports = router

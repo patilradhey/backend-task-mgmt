@@ -3,6 +3,7 @@ require('dotenv').config()
 const cors = require('cors')
 
 const dbConn = require('./config/db')
+const association = require('./models/associations')
 
 const taskRouter = require('./routes/taskRoute')
 const userRouter = require('./routes/userRoute')

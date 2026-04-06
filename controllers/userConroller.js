@@ -45,7 +45,7 @@ async function login(req, res) {
             } else {
                 const ID = alreadyUser.id
                 const role = alreadyUser.role
-                const genToken = jwt.sign({ ID: ID,role:role },process.env.SECREAT_KEY, { expiresIn: "1hr" })
+                const genToken = jwt.sign({ ID: ID,role:role },process.env.SECREAT_KEY, { expiresIn: "7d" })
                 res.status(202).send({ msg: "Login Successfull", token: genToken })
             }
         }
@@ -92,12 +92,31 @@ async function deleteUser(req, res) {
     }
 }
 
+async function updateUser(req, res) {
+    const user_ID = req.params.user_ID
+    const user = await User.findByPk(user_ID)
+
+    if (!user) {
+        res.status(400).send({ msg: "user not found" })
+    } else {
+         const hashPassword = req.body.password ? await bcryptjs.hash(req.body.password, await bcryptjs.genSalt(8)) : user.password
+        user.name = req.body.name || user.name
+        user.password = hashPassword
+        user.contactNumber = req.body.contactNumber || user.contactNumber
+        user.updateBy = req.user.ID
+
+        await user.save()
+        res.status(200).send({ msg: "User updated successfully", success: true })
+    }
+}
+
 module.exports = {
     register,
     login,
     getUserInfo,
     getAllUsers,
-    deleteUser
+    deleteUser,
+    updateUser
 }
 
 // Test body for /register:

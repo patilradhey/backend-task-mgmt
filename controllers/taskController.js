@@ -7,7 +7,18 @@ async function createTask(req, res) {
     try {
 
         console.log(req.body)
-        newTask = await Task.create(req.body)
+        const{title,description,startDate,endDate,status,priority} = req.body
+       const Id = req.user.ID
+        newTask = await Task.create({
+            title:title,
+            description:description,
+            startDate:startDate,
+            endDate:endDate,
+            status:status || 'pending',
+            priority:priority || 'low',
+            createdBy:Id,
+            updatedBy:Id
+        })
         console.log(newTask)
         res.status(200).send({ success: true, msg: "Task created successfully" })
 
@@ -50,21 +61,52 @@ async function getTaskById(req, res) {
     }
 }
 
-// Update task
-async function updateTask(req, res) {
-    try {
-        await Task.update(req.body, { where: {} })
-        res.status(200).send({ success: true, msg: "Task updated successfully" })
+// Update task by admin
+async function updateTaskByAdmin(req, res) {
+    req.body
+    const task_id = req.params.task_ID
 
-    } catch (error) {
-        res.status(500).send({ success: false, msg: "Server Error" })
+    const task = await Task.findByPk(task_id)
+    if(!task){
+        res.status(400).send({msg:"task not found"})
+    }else{
+        task.title = req.body.title || task.title,
+        task.description = req.body.description || task.description,
+        task.startDate = req.body.startDate || task.startDate,
+        task.endDate = req.body.endDate || task.endDate,
+        task.priority = req.body.priority || task.priority,
+        task.status = req.body.status || task.status,
+        task.updatedBy = req.user.ID
+
+        await task.save()
+        res.status(200).send({msg:"task updated successfully",success:true})
+    }
+}
+
+// update task status
+async function updateTaskStatus(req, res) {
+    const task_id = req.params.task_ID
+    const task = await Task.findByPk(task_id)
+
+    if (!task) {
+        res.status(400).send({ msg: "task not found" })
+    } else {
+        task.status = req.body.status || task.status
+
+        await task.save()
+        res.status(200).send({ msg: "Task status updated successfully", success: true })
     }
 }
 
 // Delete task
 async function deleteTask(req, res) {
     try {
-        await Task.destroy({ where: {} })
+        const task = await Task.findByPk(req.params.task_ID)
+        if(!task){
+            res.status(400).send({msg:"Task not found"})
+        }else{
+            await task.destroy()
+        }
         res.status(200).send({ success: true, msg: "Task deleted successfully" })
 
     } catch (error) {
@@ -77,7 +119,8 @@ module.exports = {
     createTask,
     findALLTasks,
     getTaskById,
-    updateTask,
+    updateTaskByAdmin,
+    updateTaskStatus,
     deleteTask
 }
 
