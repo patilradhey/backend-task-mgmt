@@ -13,6 +13,6 @@ router.get('/getAllUsers', userController.getAllUsers)
 
 router.patch('/updateUser/:user_ID',auth,userController.updateUser)
 
-router.delete('/deleteUser/:id', userController.deleteUser)
+router.delete('/deleteUser/:user_ID', userController.deleteUser)
 
 module.exports = router

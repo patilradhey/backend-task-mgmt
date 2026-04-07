@@ -83,8 +83,8 @@ async function getAllUsers(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        const { id } = req.params
-        await User.destroy({ where: { id: id } })
+        const { user_ID  } = req.params
+        await User.destroy({ where: { id:user_ID } })
         res.status(200).send({ success: true, msg: "User deleted successfully" })
 
     } catch (error) {
