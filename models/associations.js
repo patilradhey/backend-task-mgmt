@@ -1,5 +1,6 @@
 const User = require('./userModel')
 const Task = require('./taskModel')
+const AssignTask = require('./assignTaskModel')
 
 // One User -> Many Tasks
 User.hasMany(Task,{
@@ -7,7 +8,7 @@ User.hasMany(Task,{
     onDelete: 'CASCADE'
 })
 
-// Eacg Task -> One User
+// Each Task -> One User
 Task.belongsTo(User,{
     foreignKey: 'createdBy'
 })
@@ -21,7 +22,15 @@ User.hasMany(Task,{
     onDelete: 'CASCADE'
 })
 
-// Eacg Task -> One User
+// Each Task -> One User
 Task.belongsTo(User,{
     foreignKey: 'updatedBy'
 })
+
+
+// Assign Task
+User.hasMany(AssignTask,{foreignKey:'user_id'})
+AssignTask.belongsTo(User,{foreignKey:'user_id'})
+
+Task.hasMany(AssignTask,{foreignKey:'task_id'})
+AssignTask.belongsTo(Task,{foreignKey:"task_id"})

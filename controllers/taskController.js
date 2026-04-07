@@ -44,11 +44,10 @@ async function findALLTasks(req,res){
 
 }
 
-// Get task by ID
 async function getTaskById(req, res) {
     try {
-        const { id } = req.params
-        const task = await Task.findOne({ where: { id: id } })
+        const { task_id } = req.params
+        const task = await Task.findByPk(task_id)
 
         if (!task) {
             return res.status(404).send({ success: false, msg: "Task not found" })

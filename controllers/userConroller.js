@@ -45,7 +45,7 @@ async function login(req, res) {
             } else {
                 const ID = alreadyUser.id
                 const role = alreadyUser.role
-                const genToken = jwt.sign({ ID: ID,role:role },process.env.SECREAT_KEY, { expiresIn: "7d" })
+                const genToken = jwt.sign({ ID: ID, role: role }, process.env.SECREAT_KEY, { expiresIn: "7d" })
                 res.status(202).send({ msg: "Login Successfull", token: genToken })
             }
         }
@@ -73,7 +73,7 @@ async function getUserInfo(req, res) {
 
 async function getAllUsers(req, res) {
     try {
-        const allUsers = await User.findAll()
+        const allUsers = await User.findAll({ attributes: ['name'] })
         res.status(200).send({ success: true, users: allUsers })
 
     } catch (error) {
@@ -99,7 +99,7 @@ async function updateUser(req, res) {
     if (!user) {
         res.status(400).send({ msg: "user not found" })
     } else {
-         const hashPassword = req.body.password ? await bcryptjs.hash(req.body.password, await bcryptjs.genSalt(8)) : user.password
+        const hashPassword = req.body.password ? await bcryptjs.hash(req.body.password, await bcryptjs.genSalt(8)) : user.password
         user.name = req.body.name || user.name
         user.password = hashPassword
         user.contactNumber = req.body.contactNumber || user.contactNumber

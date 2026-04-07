@@ -7,6 +7,7 @@ const association = require('./models/associations')
 
 const taskRouter = require('./routes/taskRoute')
 const userRouter = require('./routes/userRoute')
+const assignTaskRouter = require('./routes/assignTaskRoute')
 
 
 
@@ -23,6 +24,8 @@ app.use(cors())
 app.use('/tasks', taskRouter)
 
 app.use('/user',userRouter)
+
+app.use('/assignTask',assignTaskRouter)
 
 
 app.listen(port,()=>{

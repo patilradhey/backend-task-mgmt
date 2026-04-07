@@ -8,7 +8,7 @@ router.post('/create',auth,admin, taskController.createTask)
  
 router.get('/getAllTasks',taskController.findALLTasks)
 
-router.get('/getTask/:id', taskController.getTaskById)
+router.get('/getTask/:task_id', taskController.getTaskById)
 
 router.put('/updateTaskByAdmin/:task_ID',auth,admin ,taskController.updateTaskByAdmin)
 
