@@ -20,6 +20,10 @@ const User = sequelize.define("User", {
     },
     role:{type:DataTypes.ENUM('user','admin'),
         defaultValue: 'user'
+    },
+    img_path:{
+        type:DataTypes.STRING,
+        allowNull:false
     }
 }, {
     timestamps: true,

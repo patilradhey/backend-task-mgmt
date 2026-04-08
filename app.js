@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config()
 const cors = require('cors')
+const path = require('path')
 
 const dbConn = require('./config/db')
 const association = require('./models/associations')
@@ -26,6 +27,8 @@ app.use('/tasks', taskRouter)
 app.use('/user',userRouter)
 
 app.use('/assignTask',assignTaskRouter)
+
+app.use('/upload',express.static(path.join(__dirname,'upload')))
 
 
 app.listen(port,()=>{

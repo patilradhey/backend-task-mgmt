@@ -1,9 +1,10 @@
 const express = require('express')
 const userController = require('../controllers/userConroller')
 const {auth} = require('../middleware/auth')
+const upload = require('../middleware/multer')
 const router = express.Router()
 
-router.post('/register', userController.register)
+router.post('/register', upload.single('myFile'),userController.register)
 
 router.post('/login',userController.login)
 
