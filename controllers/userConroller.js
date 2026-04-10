@@ -71,7 +71,7 @@ async function getUserInfo(req, res) {
             }
         })
         const loggedUserInfoSTR = loggedUserInfo.toJSON()
-        loggedUserInfoSTR.img_path = loggedUserInfo.img_path ? BASE_URL+loggedUserInfo.img_path : null
+        loggedUserInfoSTR.img_path = loggedUserInfo.img_path ? BASE_URL + loggedUserInfo.img_path : null
         res.status(200).send({ user: loggedUserInfoSTR, success: true })
 
     } catch (error) {
@@ -83,7 +83,9 @@ async function getUserInfo(req, res) {
 
 async function getAllUsers(req, res) {
     try {
-        const allUsers = await User.findAll({ attributes: ['name'] })
+        const allUsers = await User.findAll({
+            attributes: ['id', 'name', 'email', 'contactNumber', 'role', 'img_path']
+        })
         res.status(200).send({ success: true, users: allUsers })
 
     } catch (error) {
@@ -93,8 +95,8 @@ async function getAllUsers(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        const { user_ID  } = req.params
-        await User.destroy({ where: { id:user_ID } })
+        const { user_ID } = req.params
+        await User.destroy({ where: { id: user_ID } })
         res.status(200).send({ success: true, msg: "User deleted successfully" })
 
     } catch (error) {
