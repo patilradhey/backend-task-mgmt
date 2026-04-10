@@ -12,7 +12,7 @@ router.get('/getUserInfo',auth,userController.getUserInfo)
 
 router.get('/getAllUsers', userController.getAllUsers)
 
-router.patch('/updateUser/:user_ID',auth,userController.updateUser)
+router.patch('/updateUser/:user_ID', auth, upload.single('myFile'), userController.updateUser)
 
 router.delete('/deleteUser/:user_ID', userController.deleteUser)
 

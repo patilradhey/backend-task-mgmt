@@ -106,19 +106,31 @@ async function deleteUser(req, res) {
 
 async function updateUser(req, res) {
     const user_ID = req.params.user_ID
+    console.log('user_ID:', user_ID)        // add
+    console.log('req.body:', req.body)      // add
+    console.log('req.file:', req.file)      // add
+    
     const user = await User.findByPk(user_ID)
+    console.log('user found:', user)        // add
 
     if (!user) {
         res.status(400).send({ msg: "user not found" })
     } else {
-        const hashPassword = req.body.password ? await bcryptjs.hash(req.body.password, await bcryptjs.genSalt(8)) : user.password
-        user.name = req.body.name || user.name
-        user.password = hashPassword
-        user.contactNumber = req.body.contactNumber || user.contactNumber
-        user.updateBy = req.user.ID
-
-        await user.save()
-        res.status(200).send({ msg: "User updated successfully", success: true })
+        try {
+            const hashPassword = req.body.password ? await bcryptjs.hash(req.body.password, await bcryptjs.genSalt(8)) : user.password
+            user.name = req.body.name || user.name
+            user.password = hashPassword
+            user.contactNumber = req.body.contactNumber || user.contactNumber
+            user.updatedBy = req.user.ID
+            if (req.file) {
+                user.img_path = `http://localhost:5000/upload/${req.file.filename}`
+            }
+            await user.save()
+            res.status(200).send({ msg: "User updated successfully", success: true })
+        } catch (error) {
+            console.log(error)
+            res.status(500).send({ success: false, msg: "Server Error" })
+        }
     }
 }
 

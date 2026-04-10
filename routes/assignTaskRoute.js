@@ -9,7 +9,7 @@ router.post('/assign',auth,admin,assignTaskController.assign)
 
 router.get('/my_tasks',auth,assignTaskController.my_tasks)
 
-// route.get('/allTasksWithUser',auth,admin,assignTaskController.allTaskWithUser)
+router.get('/allTasksWithUser',auth,admin,assignTaskController.allTaskWithUser)
 
 
 

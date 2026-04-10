@@ -1,5 +1,6 @@
 const AssignTask = require('../models/assignTaskModel')
 const Task = require("../models/taskModel")
+const User = require('../models/userModel')
 
 const assign = async (req, res) => {
     try {
@@ -40,9 +41,31 @@ const my_tasks = async (req,res) =>{
     }
 }
 
+const allTaskWithUser = async (req, res) => {
+    try {
+        const tasks = await AssignTask.findAll({
+            include: [
+                {
+                    model: Task,
+                    attributes: ['title', 'description', 'status', 'priority', 'startDate', 'endDate']
+                },
+                {
+                    model: User,
+                    attributes: ['name', 'email']
+                }
+            ]
+        })
+        res.status(200).send({ success: true, tasks: tasks })
+    } catch (error) {
+        console.log('allTaskWithUser error:', error.message)  // add this
+        res.status(500).send({ success: false, msg: "Server Error" })
+    }
+}
+
 
 
 module.exports = {
     assign,
-    my_tasks 
+    my_tasks,
+    allTaskWithUser
 }
